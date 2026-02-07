@@ -151,7 +151,8 @@
 
 <body>
 <div class="myapp">
-    <h1>资产清单统计
+    <h1>
+        资产清单统计
         <div style="display: flex;align-items: center;"><i>(截至{{lastDate}})</i><i class="iconfont icon-shuaxin"
                                                                                   @click="refresh"></i></div>
     </h1>
@@ -200,6 +201,7 @@
             this.getBase()
             this.getMoney()
             this.getDate()
+            this.login()
 
 
         },
@@ -208,8 +210,12 @@
                 const {createClient} = supabase
                 this.base = createClient('https://pmfxqcqvqrhxnxyotyzp.supabase.co', 'sb_publishable_T98PsjOazNXjyak2nXPwDg_ox52NaWg')
             },
+             async login() {
+                const {data} = await this.base.auth.signInWithPassword({email: '34832462@qq.com',password: 'MYlovetoyou2024',})
+
+            },
             async getMoney() {
-                const {data} = await this.base.from('money').select().order('id', {ascending: true})
+                const {data} = await this.base.from('money').select().eq('show', true).order('id', {ascending: true})
                 this.money = data
             },
             async getDate() {
@@ -217,18 +223,18 @@
                 this.lastDate = data[0].date
             },
             async refresh() {
-                await this.base.from('refreshDate').upsert({id: 1, date: 'piano'}).select()
+                await this.base.from('refreshDate').update({date: 'otherValue' }).eq('id', 1).select()
 
             },
             async order(text) {
                 if (this.orderBy[text] !== '') {
                     if (this.orderBy[text] == 0) {
                         this.$set(this.orderBy, text, 1)
-                        const {data} = await this.base.from('money').select().order(text, {ascending: false})
+                        const {data} = await this.base.from('money').select().eq('show', true).order(text, {ascending: false})
                         this.money = data
                     } else {
                         this.$set(this.orderBy, text, 0)
-                        const {data} = await this.base.from('money').select().order(text, {ascending: true})
+                        const {data} = await this.base.from('money').select().eq('show', true).order(text, {ascending: true})
                         this.money = data
                     }
                 } else {
@@ -237,7 +243,7 @@
                         this.$set(this.orderBy, el, '')
                     })
                     this.$set(this.orderBy, text, 0)
-                    const {data} = await this.base.from('money').select().order(text, {ascending: true})
+                    const {data} = await this.base.from('money').select().eq('show', true).order(text, {ascending: true})
                     this.money = data
 
                 }
