@@ -196,7 +196,7 @@
         </tbody>
     </table>
     <div class="tj">总计：<i>{{total}}</i></div>
-    <div class="btn">编辑数据</div>
+    <div class="btn" v-cloak v-if="login">编辑数据</div>
 </div>
 <script src="index.js"></script>
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
@@ -205,6 +205,7 @@
         el: '.myapp',
         data: {
             base: null,
+            login:false,
             money: [],
             freshDate: '',
             orderBy: {
@@ -216,6 +217,7 @@
             this.getBase()
             this.getMoney()
             this.getDate()
+            this.checkLogin()
 
 
         },
@@ -234,6 +236,11 @@
             async getBase() {
                 const {createClient} = supabase
                 this.base = createClient('https://pmfxqcqvqrhxnxyotyzp.supabase.co', 'sb_publishable_T98PsjOazNXjyak2nXPwDg_ox52NaWg')
+            },
+            async checkLogin() {
+                const {data} = await this.base.auth.admin.getUserById('06d8f468-544a-4006-8c66-ae573d36297f')
+                console.log(data)
+
             },
             async getMoney() {
                 const {data} = await this.base.from('money').select().eq('show', true).order('id', {ascending: true})
