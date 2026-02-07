@@ -1,0 +1,262 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <title>资产清单统计</title>
+    <link rel="stylesheet" href="iconfont/iconfont.css">
+    <style>
+        * {
+            margin: 0px;
+            padding: 0px;
+            list-style: none;
+            box-sizing: border-box;
+        }
+
+        [v-cloak] {
+            display: none;
+        }
+
+        :root {
+            --green: #00D3C4;
+            --greenLight: #63ff00;
+            --line: #dedede;
+            --gray: #888;
+            --white: #fff;
+
+        }
+
+        body {
+            font-size: 14px;
+            font-family: '宋体';
+        }
+
+        .myapp {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 15px;
+        }
+
+        .myapp h1 {
+            font-weight: normal;
+            font-size: clamp(26px, 3vw, 40px);
+            padding: 30px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px
+        }
+
+        .myapp h1 i {
+            font-style: normal;
+            font-size: 12px;
+            color: var(--gray);
+        }
+
+        .myapp h1 i.iconfont {
+            cursor: pointer;
+        }
+
+        .myapp .tj {
+            width: 100%;
+            max-width: 800px;
+            padding: 15px 0;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+        }
+
+        .myapp .tj i {
+            font-style: normal;
+            font-weight: bold;
+            font-size: clamp(26px, 3vw, 40px);
+            color: var(--green);
+        }
+
+
+        .myapp table {
+            width: 100%;
+            max-width: 800px;
+            border-collapse: collapse;
+            text-align: center;
+        }
+
+        .myapp table thead {
+            background: var(--green);
+            height: 40px;
+            color: var(--white);
+            border: solid 1px var(--green);
+            font-size: 18px;
+            line-height: 18px;
+        }
+
+        .myapp table thead th {
+            border-right: solid 1px var(--white);
+            text-align: center;
+        }
+
+        .myapp table thead th:nth-child(1), .myapp table thead th:nth-child(3) {
+            cursor: pointer;
+        }
+
+        .myapp table thead th i {
+            font-size: 11px;
+            margin-left: 5px;
+        }
+
+        .myapp table thead th.cur i {
+            color: var(--greenLight);
+        }
+
+        .myapp table thead th:nth-child(1) {
+            text-align: center;
+        }
+
+        .myapp table thead th:nth-child(3) {
+            border-right: none;
+        }
+
+        .myapp table tbody {
+            border: solid 1px var(--line);
+            border-top: none;
+        }
+
+        .myapp table tbody td {
+            border: solid 1px var(--line);
+            border-top: none;
+            padding: 10px 5px;
+        }
+
+        .myapp table td:nth-child(1) {
+            width: 80px;
+            text-align: center;
+        }
+
+        .myapp table td:nth-child(2) {
+            width: calc(65% - 80px);
+        }
+
+        .myapp table td:nth-child(3) {
+            width: calc(35%);
+        }
+
+
+    </style>
+</head>
+
+<body>
+<div class="myapp">
+    <h1>资产清单统计
+        <div style="display: flex;align-items: center;"><i>(截至{{lastDate}})</i><i class="iconfont icon-shuaxin"
+                                                                                  @click="refresh"></i></div>
+    </h1>
+    <table>
+        <thead>
+        <tr>
+            <th :class="{cur:orderBy.id!==''}" @click="order('id')">
+                <div style="display: flex;align-items: center;justify-content: center;">序号<i
+                        class="iconfont" :class="{'icon-droparrow':orderBy.id==1,'icon-uparrow':orderBy.id==0}" v-cloak
+                        v-if="orderBy.id!==''"></i></div>
+            </th>
+            <th>项目</th>
+            <th :class="{cur:orderBy.amount!==''}" @click="order('amount')">
+                <div style="display: flex;align-items: center;justify-content: center;">金额<i
+                        class="iconfont icon-droparrow"
+                        :class="{'icon-droparrow':orderBy.amount==1,'icon-uparrow':orderBy.amount==0}" v-cloak
+                        v-if="orderBy.amount!==''"></i></div>
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="item in money">
+            <td>{{item.id}}</td>
+            <td>{{item.project}}</td>
+            <td>{{item.amount}}</td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="tj">总计：<i>{{total}}</i></div>
+</div>
+<script src="index.js"></script>
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+<script>
+    new Vue({
+        el: '.myapp',
+        data: {
+            base: null,
+            money: [],
+            lastDate: '',
+            orderBy: {
+                id: 0,//0升序，1降序
+                amount: '',//0升序，1降序
+            }
+        },
+        mounted() {
+            this.getBase()
+            this.getMoney()
+            this.getDate()
+
+
+        },
+        methods: {
+            async getBase() {
+                const {createClient} = supabase
+                this.base = createClient('https://pmfxqcqvqrhxnxyotyzp.supabase.co', 'sb_publishable_T98PsjOazNXjyak2nXPwDg_ox52NaWg')
+            },
+            async getMoney() {
+                const {data} = await this.base.from('money').select().order('id', {ascending: true})
+                this.money = data
+            },
+            async getDate() {
+                const {data} = await this.base.from('refreshDate').select()
+                this.lastDate = data[0].date
+            },
+            async refresh() {
+                await this.base.from('refreshDate').upsert({id: 1, date: 'piano'}).select()
+
+            },
+            async order(text) {
+                if (this.orderBy[text] !== '') {
+                    if (this.orderBy[text] == 0) {
+                        this.$set(this.orderBy, text, 1)
+                        const {data} = await this.base.from('money').select().order(text, {ascending: false})
+                        this.money = data
+                    } else {
+                        this.$set(this.orderBy, text, 0)
+                        const {data} = await this.base.from('money').select().order(text, {ascending: true})
+                        this.money = data
+                    }
+                } else {
+                    let keys = Object.keys(this.orderBy)
+                    keys.forEach((el) => {
+                        this.$set(this.orderBy, el, '')
+                    })
+                    this.$set(this.orderBy, text, 0)
+                    const {data} = await this.base.from('money').select().order(text, {ascending: true})
+                    this.money = data
+
+                }
+
+
+            }
+        },
+        computed: {
+            total() {
+                let total = 0;
+                this.money.forEach((el) => {
+                    total += el.amount
+                })
+                return total.toFixed(2)
+
+            },
+        },
+    })
+</script>
+</body>
+
+</html>
