@@ -156,6 +156,10 @@
         .myapp table td:nth-child(3) {
             width: calc(35%);
         }
+        .myapp .btn{
+            background: var(--green);padding: 15px 30px;color: var(--white);
+            cursor: pointer;
+        }
 
 
     </style>
@@ -192,6 +196,7 @@
         </tbody>
     </table>
     <div class="tj">总计：<i>{{total}}</i></div>
+    <div class="btn">编辑数据</div>
 </div>
 <script src="index.js"></script>
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
