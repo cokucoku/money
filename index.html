@@ -7,7 +7,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="format-detection" content="telephone=no">
-    <title>资产清单统计</title>
+    <title>登录</title>
     <link rel="stylesheet" href="iconfont/iconfont.css">
     <style>
         * {
@@ -20,17 +20,14 @@
         [v-cloak] {
             display: none;
         }
-        body{
-            /*background-image: url("https://picsum.photos/1920/920");*/
-            /*background-size: cover;*/
-            /*background-repeat: no-repeat;*/
-            /*background-position: center;*/
-            /*min-height: 100vh;*/
+
+        body {
         }
 
         :root {
             --green: #00D3C4;
             --greenLight: #63ff00;
+            --yellow: #fa0;
             --line: #dedede;
             --gray: #888;
             --white: #fff;
@@ -59,105 +56,42 @@
             gap: 5px
         }
 
-        .myapp h1 i {
-            font-style: normal;
-            font-size: 12px;
-            color: var(--gray);
-        }
-
-        .myapp h1 i.iconfont {
-            cursor: pointer;
-        }
-
-        .myapp .tj {
-            width: 100%;
-            max-width: 800px;
-            padding: 15px 0;
+        .myapp .ht {
             display: flex;
-            justify-content: flex-end;
-            align-items: center;
-        }
-
-        .myapp .tj i {
-            font-style: normal;
-            font-weight: bold;
-            font-size: clamp(26px, 3vw, 40px);
-            color: var(--green);
-        }
-
-
-        .myapp table {
+            align-items: stretch;
+            margin-bottom: 15px;
+            height: 42px;
             width: 100%;
-            max-width: 800px;
-            border-collapse: collapse;
-            text-align: center;
+            max-width: 300px;
         }
 
-        .myapp table thead {
+        .myapp .ht .ti {
             background: var(--green);
-            height: 40px;
-            color: var(--white);
-            border: solid 1px var(--green);
-            font-size: 18px;
-            line-height: 18px;
-        }
-
-        .myapp table thead th {
-            border-right: solid 1px var(--white);
-            text-align: center;
-        }
-
-        .myapp table thead th:nth-child(1), .myapp table thead th:nth-child(3) {
-            cursor: pointer;
-        }
-
-        .myapp table thead th i {
-            font-size: 11px;
-            margin-left: 5px;
-            opacity: .0;
-        }
-
-        .myapp table thead th.cur i {
-            color: var(--greenLight);
-            opacity: 1;
-        }
-
-        .myapp table thead th:nth-child(1) {
-            text-align: center;
-        }
-
-        .myapp table thead th:nth-child(3) {
-            border-right: none;
-        }
-
-        .myapp table tbody {
-            border: solid 1px var(--line);
-            border-top: none;
-        }
-
-        .myapp table tbody td {
-            border: solid 1px var(--line);
-            border-top: none;
-            padding: 10px 5px;
-        }
-        .myapp table tbody td.cur{
-            background: #f1f1f1;
-        }
-
-        .myapp table td:nth-child(1) {
             width: 80px;
-            text-align: center;
+            color: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        .myapp table td:nth-child(2) {
-            width: calc(65% - 80px);
+        .myapp .ht .ip {
+            border: solid 1px var(--line);
+            width: calc(100% - 80px);
         }
 
-        .myapp table td:nth-child(3) {
-            width: calc(35%);
+        .myapp .ht .ip input {
+            width: 100%;
+            height: 100%;
+            border: none;
+            outline: none;
+            padding: 0 15px;
         }
-        .myapp .btn{
-            background: var(--green);padding: 15px 30px;color: var(--white);
+
+
+        .myapp .btn {
+            background: var(--yellow);
+            padding: 15px 30px;
+            color: var(--white);
             cursor: pointer;
         }
 
@@ -167,36 +101,17 @@
 
 <body>
 <div class="myapp">
-    <h1>
-        资产清单统计
-        <div style="display: flex;align-items: center;"><i>(截至{{freshDate}})</i><i class="iconfont icon-shuaxin"
-                                                                                  @click="refresh"></i></div>
-    </h1>
-    <table>
-        <thead>
-        <tr>
-            <th :class="{cur:orderBy.id!==''}" @click="order('id')">
-                <div style="display: flex;align-items: center;justify-content: center;">序号<i
-                        class="iconfont" :class="{'icon-droparrow':orderBy.id==1,'icon-uparrow':orderBy.id==0}"></i></div>
-            </th>
-            <th>项目</th>
-            <th :class="{cur:orderBy.amount!==''}" @click="order('amount')">
-                <div style="display: flex;align-items: center;justify-content: center;">金额<i
-                        class="iconfont icon-droparrow"
-                        :class="{'icon-droparrow':orderBy.amount==1,'icon-uparrow':orderBy.amount==0}"></i></div>
-            </th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr v-for="item in money">
-            <td :class="{cur:orderBy.id!==''}">{{item.id}}</td>
-            <td>{{item.project}}</td>
-            <td :class="{cur:orderBy.amount!==''}" >{{item.amount}}</td>
-        </tr>
-        </tbody>
-    </table>
-    <div class="tj">总计：<i>{{total}}</i></div>
-    <div class="btn" v-cloak v-if="login">编辑数据</div>
+    <h1>登录</h1>
+    <div class="ht">
+        <div class="ti">邮箱</div>
+        <div class="ip"><input type="text" v-model="email"></div>
+    </div>
+    <div class="ht">
+        <div class="ti">密码</div>
+        <div class="ip"><input type="password" v-model="password"></div>
+    </div>
+    <div class="btn" @click="login">登录</div>
+
 </div>
 <script src="index.js"></script>
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
@@ -205,93 +120,44 @@
         el: '.myapp',
         data: {
             base: null,
-            login:false,
-            money: [],
-            freshDate: '',
-            orderBy: {
-                id: 0,//0升序，1降序
-                amount: '',//0升序，1降序
-            }
+            email:'',
+            password:''
         },
         mounted() {
             this.getBase()
-            this.getMoney()
-            this.getDate()
             this.checkLogin()
-
-
         },
         methods: {
-            toDate(timestamp) {
-                let mul=timestamp.length==10?1000:1
-                let date = new Date(timestamp * mul); //如果date为10位需要乘1000
-                let Y = date.getFullYear() + '-';
-                let M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
-                let D = (date.getDate() < 10 ? '0' + (date.getDate()) : date.getDate()) + ' ';
-                let h = (date.getHours() < 10 ? '0' + date.getHours() : date.getHours()) + ':';
-                let m = (date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()) + ':';
-                let s = (date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds());
-                return Y + M + D + h + m + s;
+            async login() {
+                 const {data}=await this.base.auth.signInWithPassword({
+                    email: this.email,
+                    password: this.password,
+                })
+                console.log(data)
+                if(data.user!=null){
+                    location.href='money.html'
+                }else{
+                    //alert("错误")
+                }
             },
             async getBase() {
                 const {createClient} = supabase
                 this.base = createClient('https://pmfxqcqvqrhxnxyotyzp.supabase.co', 'sb_publishable_T98PsjOazNXjyak2nXPwDg_ox52NaWg')
             },
             async checkLogin() {
-                const {data} = await this.base.auth.admin.getUserById('06d8f468-544a-4006-8c66-ae573d36297f')
-                console.log(data)
 
-            },
-            async getMoney() {
-                const {data} = await this.base.from('money').select().eq('show', true).order('id', {ascending: true})
-                this.money = data
-            },
-            async getDate() {
-                const {data} = await this.base.from('refreshDate').select()
-                this.freshDate = data[0].date
-            },
-            async refresh() {
-                const now = new Date()
-                const timestamp = now.getTime()
-                const freshDate = this.toDate(timestamp)
-                this.freshDate=freshDate
-                await this.base.from('refreshDate').update({'date': freshDate }).eq('id', '1').select()
-            },
-            async order(text) {
-                if (this.orderBy[text] !== '') {
-                    if (this.orderBy[text] == 0) {
-                        this.$set(this.orderBy, text, 1)
-                        const {data} = await this.base.from('money').select().eq('show', true).order(text, {ascending: false})
-                        this.money = data
-                    } else {
-                        this.$set(this.orderBy, text, 0)
-                        const {data} = await this.base.from('money').select().eq('show', true).order(text, {ascending: true})
-                        this.money = data
-                    }
-                } else {
-                    let keys = Object.keys(this.orderBy)
-                    keys.forEach((el) => {
-                        this.$set(this.orderBy, el, '')
-                    })
-                    this.$set(this.orderBy, text, 0)
-                    const {data} = await this.base.from('money').select().eq('show', true).order(text, {ascending: true})
-                    this.money = data
+                // await this.base.auth.onAuthStateChange((event, session) => {
+                //     if (event === 'SIGNED_IN') console.log('SIGNED_IN', session)
+                // })
 
+                const {data} = await this.base.auth.getUser()
+                if(data.user!=null){
+                    location.href='money.html'
                 }
 
-
-            }
-        },
-        computed: {
-            total() {
-                let total = 0;
-                this.money.forEach((el) => {
-                    total += el.amount
-                })
-                return total.toFixed(2)
-
             },
         },
+        computed: {},
     })
 </script>
 </body>

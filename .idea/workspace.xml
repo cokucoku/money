@@ -85,6 +85,11 @@
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="F:\github\money" />
+    </key>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="SvnConfiguration">
     <configuration />
@@ -101,7 +106,16 @@
       <workItem from="1770467967020" duration="1347000" />
       <workItem from="1770470022241" duration="1806000" />
       <workItem from="1770471844417" duration="1793000" />
-      <workItem from="1770473653953" duration="880000" />
+      <workItem from="1770473653953" duration="1182000" />
+      <workItem from="1770526831553" duration="1042000" />
+      <workItem from="1770528998752" duration="1175000" />
+      <workItem from="1770534831003" duration="1219000" />
+      <workItem from="1770536735861" duration="725000" />
+      <workItem from="1770540879027" duration="1794000" />
+      <workItem from="1770542687650" duration="1793000" />
+      <workItem from="1770544495651" duration="2065000" />
+      <workItem from="1770546889665" duration="1612000" />
+      <workItem from="1770548697757" duration="1454000" />
     </task>
     <servers />
   </component>
