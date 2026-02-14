@@ -160,7 +160,7 @@
         <div style="display: flex;align-items: center;"><i>(截至{{lastDate}})</i><i class="el-icon-refresh"
                                                                                   @click="insertData"></i></div>
     </h1>
-    <el-table border :data="money">
+    <el-table border :data="money" v-loading="loading">
         <el-table-column
                 label="序号"
                 prop="id"
@@ -200,6 +200,7 @@
             money: [],
             moneyAll: [],
             moneyHistory: [],
+            loading:true
         },
         mounted() {
             this.getBase()
@@ -227,6 +228,7 @@
                 this.money.forEach((el) => {
                     this.$set(el, 'edit', false)
                 })
+                this.loading=false
             },
             async getMoneyAll() {
                 const {data} = await this.base.from('money').select().order('id', {ascending: true})

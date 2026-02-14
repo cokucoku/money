@@ -201,7 +201,7 @@
 <body>
 <div class="myapp">
     <h1>历史资产记录</h1>
-    <el-table border :data="pageMoney">
+    <el-table border :data="pageMoney"  v-loading="loading">
         <el-table-column
                 label="资产类目"
         min-width="700">
@@ -266,7 +266,8 @@
             base: null,
             money: [],
             pageSize: 20,
-            currentPage: 1
+            currentPage: 1,
+            loading:true
         },
         mounted() {
             this.getBase()
@@ -291,8 +292,7 @@
                 this.money.forEach((el) => {
                     this.$set(el, 'total', this.totalLine(el))
                 })
-
-
+                this.loading=false
             },
             totalLine(el) {
                 let total = 0
