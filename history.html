@@ -30,6 +30,8 @@
             --gray: #888;
             --black: #000;
             --white: #fff;
+            --success:#093;
+            --red:#ee2500;
         }
 
         body {
@@ -102,6 +104,21 @@
             height: auto;
             line-height: inherit;
         }
+        .el-table td.el-table__cell .cell .zj{
+            color: var(--green);
+            font-weight: bold;
+            font-size: 30px;
+        }
+        .el-table td.el-table__cell .cell .zj .addredu{
+            font-size: 14px;
+        }
+        .el-table td.el-table__cell .cell .zj i.add{
+            color: var(--red);font-weight: bold;
+        }
+        .el-table td.el-table__cell .cell .zj i.redu{
+            color: var(--success);font-weight: bold;
+        }
+
 
         .el-table thead tr {
             color: var(--white);
@@ -183,7 +200,18 @@
                 label="总计"
                 width="180">
             <template slot-scope="scope">
-                <div style="font-size: 20px;font-weight: bold;color: var(--green)">{{totalLine(scope.row)}}</div>
+                <div class="zj">
+                    {{totalLine(scope.row)}}
+                    <div class="addredu">
+                        <template v-cloak v-if="bj(scope.row)>0">
+                            <i class="add el-icon-top">+{{bj(scope.row)}}</i>
+                        </template>
+                        <template v-else>
+                            <i class="redu el-icon-bottom">{{bj(scope.row)}}</i>
+                        </template>
+
+                    </div>
+                </div>
             </template>
         </el-table-column>
         <el-table-column
@@ -229,7 +257,29 @@
                 el.money.forEach((el)=>{
                     total+=Number(el.amount)
                 })
+                this.$set(el,'total',total.toFixed(2))
                 return total.toFixed(2)
+            },
+            bj(el) {
+                let current=el.total
+                let prev
+                let fi=this.money.filter((ell)=>{
+                    return ell.id<el.id
+                })
+                if(fi.length>0){
+                    prev=fi[0].total
+                }else{
+                    prev=0
+                }
+                return (current-prev).toFixed(2)
+
+                //return el.total-
+               // let maxObject = el.reduce((prev, current) => {
+               //     (prev.amount - current.amount ? prev : current)
+               // });
+               // return maxObject
+
+
             },
         },
         computed: {},
