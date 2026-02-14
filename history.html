@@ -7,9 +7,9 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="format-detection" content="telephone=no">
-    <title>资产清单统计</title>
+    <title>资产历史记录</title>
     <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
-    <style>
+<style>
         * {
             margin: 0px;
             padding: 0px;
@@ -43,7 +43,7 @@
             align-items: center;
             padding: 15px;
             width: 100%;
-            max-width: 1100px;
+            max-width: 1200px;
             margin: 0 auto
         }
 
@@ -98,6 +98,10 @@
             line-height: 38px;
             padding: 0;
         }
+        .el-table td.el-table__cell .cell{
+            height: auto;
+            line-height: inherit;
+        }
 
         .el-table thead tr {
             color: var(--white);
@@ -146,45 +150,48 @@
             justify-content: flex-end;
             width: 100%;
         }
+    .el-statistic{
+        padding: 10px 0;
+    }
+    .number{
+        color: var(--green);
+    }
 
 
     </style>
 </head>
 
 <body>
-<div class="myapp" style="max-width: 700px;">
-    <h1>
-        最新资产清单统计
-        <div style="display: flex;align-items: center;"><i>(截至{{lastDate}})</i><i class="el-icon-refresh"
-                                                                                  @click="insertData"></i></div>
-    </h1>
+<div class="myapp">
+    <h1>历史资产记录</h1>
     <el-table border :data="money">
-        <el-table-column
-                label="序号"
-                prop="id"
-                sortable
-                width="65">
-        </el-table-column>
         <el-table-column
                 label="项目">
             <template slot-scope="scope">
-                <div v-cloak v-if="!scope.row.edit" @click="beginEdit(scope.row)">{{scope.row.project}}</div>
-                <input v-else v-model="scope.row.project" @blur="quitEdit(scope.row)">
+                <div style="display: flex;">
+                    <el-statistic
+                            group-separator=""
+                            :precision="0"
+                            :value="item.amount"
+                            :title="item.project"
+                            v-for="item in scope.row.money"
+                    ></el-statistic>
+                </div>
             </template>
         </el-table-column>
         <el-table-column
-                label="金额"
-                prop="amount"
-                sortable>
+                label="总计"
+                width="180">
             <template slot-scope="scope">
-                <div v-cloak v-if="!scope.row.edit" @click="beginEdit(scope.row)">{{scope.row.amount}}</div>
-                <input v-else v-model="scope.row.amount" @blur="quitEdit(scope.row)">
+                <div style="font-size: 20px;font-weight: bold;color: var(--green)">{{totalLine(scope.row)}}</div>
             </template>
         </el-table-column>
+        <el-table-column
+                label="时间"
+                width="80"
+                prop="created_at">
+        </el-table-column>
     </el-table>
-    <div class="footer">
-        <div class="tj">总计：<i>{{total}}</i></div>
-    </div>
 </div>
 <script src="index.js"></script>
 <script src="https://unpkg.com/element-ui/lib/index.js"></script>
@@ -194,18 +201,12 @@
         el: '.myapp',
         data: {
             base: null,
-            lastDate:'',
             money: [],
-            moneyAll: [],
-            moneyHistory: [],
         },
         mounted() {
             this.getBase()
             this.checkLogin()
             this.getMoney()
-            this.getMoneyAll()
-            this.getMoneyHistory()
-            this.getDate()
         },
         methods: {
             async getBase() {
@@ -220,84 +221,18 @@
 
             },
             async getMoney() {
-                const {data} = await this.base.from('money').select().eq('show', true).order('id', {ascending: true})
-                this.money = data
-                this.money.forEach((el) => {
-                    this.$set(el, 'edit', false)
-                })
-            },
-            async getMoneyAll() {
-                const {data} = await this.base.from('money').select().order('id', {ascending: true})
-                this.moneyAll = data
-            },
-            async getMoneyHistory() {
                 const {data} = await this.base.from('moneyHistory').select().order('id', {ascending: false})
-                this.moneyHistory = data
+                this.money = data
             },
-            async getDate() {
-                const {data} = await this.base.from('refreshDate').select()
-                this.lastDate = data[0].date
-            },
-            beginEdit(data) {
-                data.edit = true
-            },
-            async quitEdit(data) {
-                data.edit = false
-                await this.base.from('money').update({
-                    project: data.project,
-                    amount: data.amount,
-                }).eq('id', data.id)
-                this.getMoneyAll()
-
-            },
-            async insertData() {
-                let id
-                if (this.moneyHistory.length > 0) {
-                    let maxObject = this.moneyHistory.reduce((prev, current) => (prev.id > current.id ? prev : current));
-                    id = maxObject.id + 1
-                } else {
-                    id = 1
-                }
-
-                const created_at = this.toDate(new Date())
-
-
-                let moneyObject=[]
-                this.moneyAll.forEach((el)=>{
-                    moneyObject.push({
-                        project:el.project,
-                        amount:el.amount
-                    })
-                })
-
-                await this.base.from('moneyHistory').insert({
-                    id: id,
-                    money:moneyObject,
-                    created_at:created_at
-                })
-                await this.base.from('refreshDate').update({'date': created_at}).eq('id', '1')
-                this.lastDate = created_at
-
-            },
-            toDate(date){
-                let Y = date.getFullYear() + '-';
-                let M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
-                let D = (date.getDate() < 10 ? '0' + (date.getDate()) : date.getDate()) + ' ';
-                let h = (date.getHours() < 10 ? '0' + date.getHours() : date.getHours()) + ':';
-                let m = (date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()) + ':';
-                let s = (date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds());
-                return Y + M + D + h + m + s;
-            }
-        },
-        computed: {
-            total() {
-                let total = 0;
-                this.money.forEach((el) => {
-                    total += Number(el.amount)
+            totalLine(el) {
+                let total =0
+                el.money.forEach((el)=>{
+                    total+=Number(el.amount)
                 })
                 return total.toFixed(2)
             },
         },
+        computed: {},
         watch: {}
     })
 </script>

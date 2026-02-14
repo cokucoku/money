@@ -133,7 +133,6 @@
                     email: this.email,
                     password: this.password,
                 })
-                console.log(error)
                 if(data.user!=null){
                     location.href='money.html'
                 }else{
@@ -145,11 +144,6 @@
                 this.base = createClient('https://pmfxqcqvqrhxnxyotyzp.supabase.co', 'sb_publishable_T98PsjOazNXjyak2nXPwDg_ox52NaWg')
             },
             async checkLogin() {
-
-                // await this.base.auth.onAuthStateChange((event, session) => {
-                //     if (event === 'SIGNED_IN') console.log('SIGNED_IN', session)
-                // })
-
                 const {data} = await this.base.auth.getUser()
                 if(data.user!=null){
                     location.href='money.html'
