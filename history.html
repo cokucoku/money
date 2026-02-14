@@ -9,7 +9,7 @@
     <meta name="format-detection" content="telephone=no">
     <title>资产历史记录</title>
     <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
-<style>
+    <style>
         * {
             margin: 0px;
             padding: 0px;
@@ -30,8 +30,8 @@
             --gray: #888;
             --black: #000;
             --white: #fff;
-            --success:#093;
-            --red:#ee2500;
+            --success: #093;
+            --red: #ee2500;
         }
 
         body {
@@ -87,10 +87,12 @@
         .el-table .el-table__cell {
             padding: 0;
         }
-        .el-table--border .el-table__cell:first-child .cell{
+
+        .el-table--border .el-table__cell:first-child .cell {
             padding: 0;
         }
-        .el-table th.el-table__cell>.cell{
+
+        .el-table th.el-table__cell > .cell {
             padding: 0;
         }
 
@@ -100,23 +102,35 @@
             line-height: 38px;
             padding: 0;
         }
-        .el-table td.el-table__cell .cell{
+
+        .el-table td.el-table__cell .cell {
             height: auto;
             line-height: inherit;
         }
-        .el-table td.el-table__cell .cell .zj{
+
+        .el-table td.el-table__cell .cell .zj {
             color: var(--green);
             font-weight: bold;
             font-size: 30px;
         }
-        .el-table td.el-table__cell .cell .zj .addredu{
+
+        .el-table td.el-table__cell .cell .zj .addredu {
             font-size: 14px;
         }
-        .el-table td.el-table__cell .cell .zj i.add{
-            color: var(--red);font-weight: bold;
+
+        .el-table td.el-table__cell .cell .zj i.add {
+            color: var(--red);
+            font-weight: bold;
         }
-        .el-table td.el-table__cell .cell .zj i.redu{
-            color: var(--success);font-weight: bold;
+
+        .el-table td.el-table__cell .cell .zj i.redu {
+            color: var(--success);
+            font-weight: bold;
+        }
+
+        .el-table td.el-table__cell .cell .zj i.gray {
+            color: var(--gray);
+            font-weight: bold;
         }
 
 
@@ -167,12 +181,18 @@
             justify-content: flex-end;
             width: 100%;
         }
-    .el-statistic{
-        padding: 10px 0;
-    }
-    .number{
-        color: var(--green);
-    }
+
+        .el-statistic {
+            padding: 10px 0;
+        }
+
+        .number {
+            color: var(--green);
+        }
+
+        .el-pagination {
+            padding-top: 10px;
+        }
 
 
     </style>
@@ -181,7 +201,7 @@
 <body>
 <div class="myapp">
     <h1>历史资产记录</h1>
-    <el-table border :data="money">
+    <el-table border :data="pageMoney">
         <el-table-column
                 label="资产类目">
             <template slot-scope="scope">
@@ -200,13 +220,16 @@
                 label="总计"
                 width="180"
                 prop="total"
-        sortable>
+                sortable>
             <template slot-scope="scope">
                 <div class="zj">
                     {{totalLine(scope.row)}}
                     <div class="addredu">
                         <template v-cloak v-if="bj(scope.row)>0">
                             <i class="add el-icon-top">+{{bj(scope.row)}}</i>
+                        </template>
+                        <template v-else-if="bj(scope.row)==0">
+                            <i class="gray el-icon-right">{{bj(scope.row)}}</i>
                         </template>
                         <template v-else>
                             <i class="redu el-icon-bottom">{{bj(scope.row)}}</i>
@@ -220,9 +243,17 @@
                 label="时间"
                 width="80"
                 prop="created_at"
-        sortable>
+                sortable>
         </el-table-column>
     </el-table>
+    <el-pagination
+            background
+            layout="prev, pager, next"
+            :page-size="pageSize"
+            :total="total"
+            :current-page="1"
+            @current-change="page">
+    </el-pagination>
 </div>
 <script src="index.js"></script>
 <script src="https://unpkg.com/element-ui/lib/index.js"></script>
@@ -233,6 +264,8 @@
         data: {
             base: null,
             money: [],
+            pageSize: 20,
+            currentPage: 1
         },
         mounted() {
             this.getBase()
@@ -254,38 +287,48 @@
             async getMoney() {
                 const {data} = await this.base.from('moneyHistory').select().order('id', {ascending: false})
                 this.money = data
+                this.money.forEach((el) => {
+                    this.$set(el, 'total', this.totalLine(el))
+                })
+
+
             },
             totalLine(el) {
-                let total =0
-                el.money.forEach((el)=>{
-                    total+=Number(el.amount)
+                let total = 0
+                el.money.forEach((el) => {
+                    total += Number(el.amount)
                 })
-                this.$set(el,'total',total.toFixed(2))
+                //this.$set(el, 'total', total.toFixed(2))
                 return total.toFixed(2)
             },
             bj(el) {
-                let current=el.total
+                let current = el.total
                 let prev
-                let fi=this.money.filter((ell)=>{
-                    return ell.id<el.id
+                let fi = this.money.filter((ell) => {
+                    return ell.id < el.id
                 })
-                if(fi.length>0){
-                    prev=fi[0].total
-                }else{
-                    prev=0
+                if (fi.length > 0) {
+                    prev = fi[0].total
+                } else {
+                    prev = 0
                 }
-                return (current-prev).toFixed(2)
-
-                //return el.total-
-               // let maxObject = el.reduce((prev, current) => {
-               //     (prev.amount - current.amount ? prev : current)
-               // });
-               // return maxObject
-
-
+                return (current - prev).toFixed(2)
+            },
+            page(el) {
+                this.currentPage = el
             },
         },
-        computed: {},
+        computed: {
+            total() {
+                return this.money.length
+            },
+            pageMoney() {
+                let lastData = this.money.filter((el, index) => {
+                    return index >= (this.currentPage - 1) * this.pageSize && index < this.currentPage * this.pageSize
+                })
+                return lastData
+            }
+        },
         watch: {}
     })
 </script>

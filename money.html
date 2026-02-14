@@ -85,10 +85,12 @@
         .el-table .el-table__cell {
             padding: 0;
         }
-        .el-table--border .el-table__cell:first-child .cell{
+
+        .el-table--border .el-table__cell:first-child .cell {
             padding: 0;
         }
-        .el-table th.el-table__cell>.cell{
+
+        .el-table th.el-table__cell > .cell {
             padding: 0;
         }
 
@@ -194,7 +196,7 @@
         el: '.myapp',
         data: {
             base: null,
-            lastDate:'',
+            lastDate: '',
             money: [],
             moneyAll: [],
             moneyHistory: [],
@@ -262,24 +264,30 @@
                 const created_at = this.toDate(new Date())
 
 
-                let moneyObject=[]
-                this.moneyAll.forEach((el)=>{
+                let moneyObject = []
+                this.moneyAll.forEach((el) => {
                     moneyObject.push({
-                        project:el.project,
-                        amount:el.amount
+                        project: el.project,
+                        amount: el.amount
                     })
                 })
 
                 await this.base.from('moneyHistory').insert({
                     id: id,
-                    money:moneyObject,
-                    created_at:created_at
+                    money: moneyObject,
+                    created_at: created_at
                 })
                 await this.base.from('refreshDate').update({'date': created_at}).eq('id', '1')
-                this.lastDate = created_at
+                this.$message({
+                    type: 'success',
+                    message: '数据存储成功',
+                    onClose: () => {
+                        location.reload()
+                    }
+                });
 
             },
-            toDate(date){
+            toDate(date) {
                 let Y = date.getFullYear() + '-';
                 let M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
                 let D = (date.getDate() < 10 ? '0' + (date.getDate()) : date.getDate()) + ' ';
