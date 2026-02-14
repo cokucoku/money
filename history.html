@@ -45,7 +45,7 @@
             align-items: center;
             padding: 15px;
             width: 100%;
-            max-width: 1200px;
+            max-width: 1100px;
             margin: 0 auto
         }
 
@@ -203,7 +203,8 @@
     <h1>历史资产记录</h1>
     <el-table border :data="pageMoney">
         <el-table-column
-                label="资产类目">
+                label="资产类目"
+        min-width="700">
             <template slot-scope="scope">
                 <div style="display: flex;">
                     <el-statistic
@@ -241,7 +242,7 @@
         </el-table-column>
         <el-table-column
                 label="时间"
-                width="80"
+                width="180"
                 prop="created_at"
                 sortable>
         </el-table-column>
