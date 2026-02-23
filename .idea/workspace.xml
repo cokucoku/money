@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5f939f9e-ea9b-4588-afb2-3db85ade6110" name="默认的" comment="">
-      <change beforePath="$PROJECT_DIR$/money.html" beforeDir="false" afterPath="$PROJECT_DIR$/money.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/history.html" beforeDir="false" afterPath="$PROJECT_DIR$/history.html" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -18,7 +19,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="652">
+            <state relative-caret-position="1342">
               <caret line="148" column="40" selection-start-line="148" selection-start-column="40" selection-end-line="148" selection-end-column="40" />
               <folding>
                 <element signature="n#style#0;n#head#0;n#html#0;n#!!top" />
@@ -27,11 +28,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/money.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="357">
-              <caret line="202" column="24" selection-start-line="202" selection-start-column="24" selection-end-line="202" selection-end-column="24" />
+            <state relative-caret-position="-347">
+              <caret line="230" column="16" selection-start-line="230" selection-start-column="16" selection-end-line="230" selection-end-column="34" />
               <folding>
                 <element signature="n#style#0;n#head#0;n#html#0;n#!!top" />
                 <element signature="n#style#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -40,16 +41,14 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/history.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="176">
-              <caret line="206" column="22" selection-start-line="206" selection-start-column="22" selection-end-line="206" selection-end-column="22" />
+            <state relative-caret-position="87">
+              <caret line="220" column="101" selection-start-line="220" selection-start-column="101" selection-end-line="220" selection-end-column="101" />
               <folding>
                 <element signature="n#style#0;n#head#0;n#html#0;n#!!top" />
                 <element signature="n#style#0;n#div#0;n#template#0;n#el-table-column#0;n#el-table#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="e#8765#8963#0" />
-                <element signature="e#8996#9182#0" />
               </folding>
             </state>
           </provider>
@@ -62,7 +61,6 @@
       <find>tjprice</find>
       <find>lastMoney</find>
       <find>historyMoney</find>
-      <find>total</find>
       <find>insertData</find>
       <find>money</find>
       <find>totalLine</find>
@@ -74,6 +72,9 @@
       <find>formatter</find>
       <find>lastDate</find>
       <find>moneyHistory</find>
+      <find>page</find>
+      <find>bj</find>
+      <find>total</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -84,14 +85,14 @@
       <list>
         <option value="$PROJECT_DIR$/showData.html" />
         <option value="$PROJECT_DIR$/index.html" />
-        <option value="$PROJECT_DIR$/history.html" />
         <option value="$PROJECT_DIR$/money.html" />
+        <option value="$PROJECT_DIR$/history.html" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="260" />
-    <option name="y" value="20" />
+    <option name="x" value="-8" />
+    <option name="y" value="-8" />
     <option name="width" value="1400" />
     <option name="height" value="1000" />
   </component>
@@ -184,12 +185,13 @@
       <workItem from="1770630663301" duration="52000" />
       <workItem from="1770630772758" duration="36000" />
       <workItem from="1770857802225" duration="622000" />
-      <workItem from="1770945686812" duration="49124000" />
+      <workItem from="1770945686812" duration="49831000" />
+      <workItem from="1771808453658" duration="9571000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="66906000" />
+    <option name="totallyTimeSpent" value="77184000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -234,30 +236,8 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/iconfont/iconfont.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="330">
-          <caret line="15" column="1" selection-start-line="15" selection-start-column="1" selection-end-line="15" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/money_1.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="484">
-          <caret line="307" column="13" lean-forward="true" selection-start-line="307" selection-start-column="13" selection-end-line="316" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="652">
-          <caret line="148" column="40" selection-start-line="148" selection-start-column="40" selection-end-line="148" selection-end-column="40" />
-          <folding>
-            <element signature="n#style#0;n#head#0;n#html#0;n#!!top" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/iconfont/iconfont.css" />
+    <entry file="file://$PROJECT_DIR$/money_1.html" />
     <entry file="file://$PROJECT_DIR$/money_old.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="396">
@@ -268,26 +248,34 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/history.html">
+    <entry file="file://$PROJECT_DIR$/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="176">
-          <caret line="206" column="22" selection-start-line="206" selection-start-column="22" selection-end-line="206" selection-end-column="22" />
+        <state relative-caret-position="1342">
+          <caret line="148" column="40" selection-start-line="148" selection-start-column="40" selection-end-line="148" selection-end-column="40" />
           <folding>
             <element signature="n#style#0;n#head#0;n#html#0;n#!!top" />
-            <element signature="n#style#0;n#div#0;n#template#0;n#el-table-column#0;n#el-table#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="e#8765#8963#0" />
-            <element signature="e#8996#9182#0" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/money.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="357">
-          <caret line="202" column="24" selection-start-line="202" selection-start-column="24" selection-end-line="202" selection-end-column="24" />
+        <state relative-caret-position="-347">
+          <caret line="230" column="16" selection-start-line="230" selection-start-column="16" selection-end-line="230" selection-end-column="34" />
           <folding>
             <element signature="n#style#0;n#head#0;n#html#0;n#!!top" />
             <element signature="n#style#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/history.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="87">
+          <caret line="220" column="101" selection-start-line="220" selection-start-column="101" selection-end-line="220" selection-end-column="101" />
+          <folding>
+            <element signature="n#style#0;n#head#0;n#html#0;n#!!top" />
+            <element signature="n#style#0;n#div#0;n#template#0;n#el-table-column#0;n#el-table#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
           </folding>
         </state>
       </provider>

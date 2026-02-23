@@ -118,17 +118,17 @@
             font-size: 14px;
         }
 
-        .el-table td.el-table__cell .cell .zj i.add {
+        .el-table td.el-table__cell .cell  i.add {
             color: var(--red);
             font-weight: bold;
         }
 
-        .el-table td.el-table__cell .cell .zj i.redu {
+        .el-table td.el-table__cell .cell  i.redu {
             color: var(--success);
             font-weight: bold;
         }
 
-        .el-table td.el-table__cell .cell .zj i.gray {
+        .el-table td.el-table__cell .cell  i.gray {
             color: var(--gray);
             font-weight: bold;
         }
@@ -174,6 +174,9 @@
         .el-table .descending .sort-caret.descending {
             border-top-color: var(--yellow);
         }
+        .el-statistic .con{
+            flex-direction: column;gap:8px
+        }
 
         .footer {
             display: flex;
@@ -201,10 +204,10 @@
 <body>
 <div class="myapp">
     <h1>历史资产记录</h1>
-    <el-table border :data="pageMoney"  v-loading="loading">
+    <el-table border :data="pageMoney" v-loading="loading">
         <el-table-column
                 label="资产类目"
-        min-width="700">
+                min-width="700">
             <template slot-scope="scope">
                 <div style="display: flex;">
                     <el-statistic
@@ -213,7 +216,13 @@
                             :value="item.amount"
                             :title="item.project"
                             v-for="item in scope.row.money"
-                    ></el-statistic>
+                    >
+                        <template slot="suffix">
+                            <i class="add el-icon-top" v-cloak v-if="bjj(scope.row,item.project)>0">+{{bjj(scope.row,item.project)}}</i>
+                            <i class="gray el-icon-right" v-else-if="bjj(scope.row,item.project)==0">{{bjj(scope.row,item.project)}}</i>
+                            <i class="redu el-icon-bottom" v-else>{{bjj(scope.row,item.project)}}</i>
+                        </template>
+                    </el-statistic>
                 </div>
             </template>
         </el-table-column>
@@ -267,7 +276,7 @@
             money: [],
             pageSize: 20,
             currentPage: 1,
-            loading:true
+            loading: true
         },
         mounted() {
             this.getBase()
@@ -291,8 +300,12 @@
                 this.money = data
                 this.money.forEach((el) => {
                     this.$set(el, 'total', this.totalLine(el))
+                    el.money.forEach((ell) => {
+                        this.$set(el, ell.project,ell.amount)
+                    })
                 })
-                this.loading=false
+                this.loading = false
+                console.log(this.money)
             },
             totalLine(el) {
                 let total = 0
@@ -310,6 +323,19 @@
                 })
                 if (fi.length > 0) {
                     prev = fi[0].total
+                } else {
+                    prev = 0
+                }
+                return (current - prev).toFixed(2)
+            },
+            bjj(el,project) {
+                let current = el[project]
+                let prev
+                let fi = this.money.filter((ell) => {
+                    return ell.id < el.id
+                })
+                if (fi.length > 0) {
+                    prev = fi[0][project]
                 } else {
                     prev = 0
                 }
