@@ -43,10 +43,9 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/history.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="549">
-              <caret line="241" column="64" selection-start-line="241" selection-start-column="64" selection-end-line="241" selection-end-column="64" />
+            <state relative-caret-position="220">
+              <caret line="41" column="8" selection-start-line="41" selection-start-column="8" selection-end-line="49" selection-end-column="9" />
               <folding>
-                <element signature="n#style#0;n#head#0;n#html#0;n#!!top" />
                 <element signature="n#style#0;n#div#0;n#template#0;n#el-table-column#0;n#el-table#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
               </folding>
             </state>
@@ -185,12 +184,12 @@
       <workItem from="1770630772758" duration="36000" />
       <workItem from="1770857802225" duration="622000" />
       <workItem from="1770945686812" duration="49831000" />
-      <workItem from="1771808453658" duration="10098000" />
+      <workItem from="1771808453658" duration="10976000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="77711000" />
+    <option name="totallyTimeSpent" value="78589000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -270,10 +269,9 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/history.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="549">
-          <caret line="241" column="64" selection-start-line="241" selection-start-column="64" selection-end-line="241" selection-end-column="64" />
+        <state relative-caret-position="220">
+          <caret line="41" column="8" selection-start-line="41" selection-start-column="8" selection-end-line="49" selection-end-column="9" />
           <folding>
-            <element signature="n#style#0;n#head#0;n#html#0;n#!!top" />
             <element signature="n#style#0;n#div#0;n#template#0;n#el-table-column#0;n#el-table#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
           </folding>
         </state>

@@ -204,7 +204,7 @@
 <body>
 <div class="myapp">
     <h1>历史资产记录</h1>
-    <el-table border :data="pageMoney" v-loading="loading">
+    <el-table border :data="pageMoney" v-loading="loading" stripe>
         <el-table-column
                 label="资产类目"
                 min-width="700">
