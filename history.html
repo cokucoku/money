@@ -219,7 +219,7 @@
                     >
                         <template slot="suffix">
                             <i class="add el-icon-top" v-cloak v-if="bjj(scope.row,item.project)>0">+{{bjj(scope.row,item.project)}}</i>
-                            <i class="gray el-icon-right" v-else-if="bjj(scope.row,item.project)==0">{{bjj(scope.row,item.project)}}</i>
+                            <i class="gray el-icon-magic-stick" v-else-if="bjj(scope.row,item.project)==0">{{bjj(scope.row,item.project)}}</i>
                             <i class="redu el-icon-bottom" v-else>{{bjj(scope.row,item.project)}}</i>
                         </template>
                     </el-statistic>
@@ -239,7 +239,7 @@
                             <i class="add el-icon-top">+{{bj(scope.row)}}</i>
                         </template>
                         <template v-else-if="bj(scope.row)==0">
-                            <i class="gray el-icon-right">{{bj(scope.row)}}</i>
+                            <i class="gray el-icon-magic-stick">{{bj(scope.row)}}</i>
                         </template>
                         <template v-else>
                             <i class="redu el-icon-bottom">{{bj(scope.row)}}</i>
