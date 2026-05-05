@@ -46,6 +46,7 @@
             padding: 15px;
             width: 100%;
             max-width: 1100px;
+            max-width: 1200px;
             margin: 0 auto
         }
 
@@ -118,17 +119,17 @@
             font-size: 14px;
         }
 
-        .el-table td.el-table__cell .cell  i.add {
+        .el-table td.el-table__cell .cell i.add {
             color: var(--red);
             font-weight: bold;
         }
 
-        .el-table td.el-table__cell .cell  i.redu {
+        .el-table td.el-table__cell .cell i.redu {
             color: var(--success);
             font-weight: bold;
         }
 
-        .el-table td.el-table__cell .cell  i.gray {
+        .el-table td.el-table__cell .cell i.gray {
             color: var(--gray);
             font-weight: bold;
         }
@@ -174,8 +175,10 @@
         .el-table .descending .sort-caret.descending {
             border-top-color: var(--yellow);
         }
-        .el-statistic .con{
-            flex-direction: column;gap:8px
+
+        .el-statistic .con {
+            flex-direction: column;
+            gap: 8px
         }
 
         .footer {
@@ -251,9 +254,17 @@
         </el-table-column>
         <el-table-column
                 label="时间"
-                width="180"
+                width="80"
                 prop="created_at"
                 sortable>
+        </el-table-column>
+        <el-table-column
+                label="备注"
+                width="180"
+                prop="dec">
+            <template slot-scope="scope">
+                <div v-html="scope.row.dec" style="white-space: pre-wrap"></div>
+            </template>
         </el-table-column>
     </el-table>
     <el-pagination
@@ -301,11 +312,10 @@
                 this.money.forEach((el) => {
                     this.$set(el, 'total', this.totalLine(el))
                     el.money.forEach((ell) => {
-                        this.$set(el, ell.project,ell.amount)
+                        this.$set(el, ell.project, ell.amount)
                     })
                 })
                 this.loading = false
-                console.log(this.money)
             },
             totalLine(el) {
                 let total = 0
@@ -328,7 +338,7 @@
                 }
                 return (current - prev).toFixed(2)
             },
-            bjj(el,project) {
+            bjj(el, project) {
                 let current = el[project]
                 let prev
                 let fi = this.money.filter((ell) => {
@@ -344,6 +354,7 @@
             page(el) {
                 this.currentPage = el
             },
+
         },
         computed: {
             total() {

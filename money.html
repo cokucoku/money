@@ -145,8 +145,29 @@
         .footer {
             display: flex;
             align-items: center;
-            justify-content: flex-end;
+            justify-content: space-between;
             width: 100%;
+        }
+
+        .footer .remark {
+            color: var(--green);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            border: solid 1px var(--green);
+            padding: 8px;
+            border-radius: 10px;
+            transition: all .4s;
+        }
+
+        .footer .remark:hover {
+            background: var(--green);
+            color: var(--white);
+        }
+
+        .footer .remark i {
+            padding-right: 5px;
+            font-size: 16px;
         }
 
 
@@ -155,6 +176,20 @@
 
 <body>
 <div class="myapp" style="max-width: 700px;">
+    <el-dialog
+            title="填写备注"
+            :visible.sync="show"
+            :close-on-click-modal="false"
+    >
+        <el-form :model="remarkForm" status-icon ref="remarkForm" label-width="80px">
+            <el-form-item label="备注">
+                <el-input type="textarea" v-model="remarkForm.remark" rows="6"></el-input>
+            </el-form-item>
+            <el-form-item>
+                <el-button type="primary" @click="submitForm('remarkForm')">提交</el-button>
+            </el-form-item>
+        </el-form>
+    </el-dialog>
     <h1>
         最新资产清单统计
         <div style="display: flex;align-items: center;"><i>(截至{{lastDate}})</i><i class="el-icon-refresh"
@@ -185,6 +220,7 @@
         </el-table-column>
     </el-table>
     <div class="footer">
+        <div class="remark" @click="show=true"><i class="el-icon-document"></i>编辑备注</div>
         <div class="tj">总计：<i>{{total}}</i></div>
     </div>
 </div>
@@ -200,7 +236,11 @@
             money: [],
             moneyAll: [],
             moneyHistory: [],
-            loading:true
+            loading: true,
+            show: false,
+            remarkForm: {
+                remark: ''
+            },
         },
         mounted() {
             this.getBase()
@@ -211,6 +251,19 @@
             this.getDate()
         },
         methods: {
+            submitForm(formName) {
+                this.$refs[formName].validate((valid) => {
+                    if (valid) {
+                        // this.$message({
+                        //     message: '添加成功',
+                        //     type: 'success'
+                        // });
+                        this.show = false
+                    } else {
+                        return false;
+                    }
+                });
+            },
             async getBase() {
                 const {createClient} = supabase
                 this.base = createClient('https://pmfxqcqvqrhxnxyotyzp.supabase.co', 'sb_publishable_T98PsjOazNXjyak2nXPwDg_ox52NaWg')
@@ -228,7 +281,7 @@
                 this.money.forEach((el) => {
                     this.$set(el, 'edit', false)
                 })
-                this.loading=false
+                this.loading = false
             },
             async getMoneyAll() {
                 const {data} = await this.base.from('money').select().order('id', {ascending: true})
@@ -254,7 +307,26 @@
                 this.getMoneyAll()
 
             },
-            async insertData() {
+            async confirmInsert(id,moneyObject,created_at){
+                 await this.base.from('moneyHistory').insert({
+                    id: id,
+                    money: moneyObject,
+                    created_at: created_at,
+                    dec: this.remarkForm.remark
+                })
+                await this.base.from('refreshDate').update({'date': created_at}).eq('id', '1')
+
+                this.$message({
+                    type: 'success',
+                    message: '数据存储成功',
+                    onClose: () => {
+                        //this.remarkForm.remark
+                        location.reload()
+                    }
+                });
+            }
+            ,
+            insertData() {
                 let id
                 if (this.moneyHistory.length > 0) {
                     let maxObject = this.moneyHistory.reduce((prev, current) => (prev.id > current.id ? prev : current));
@@ -274,19 +346,26 @@
                     })
                 })
 
-                await this.base.from('moneyHistory').insert({
-                    id: id,
-                    money: moneyObject,
-                    created_at: created_at
-                })
-                await this.base.from('refreshDate').update({'date': created_at}).eq('id', '1')
-                this.$message({
-                    type: 'success',
-                    message: '数据存储成功',
-                    onClose: () => {
-                        location.reload()
-                    }
-                });
+                if (this.remarkForm.remark == '') {
+                    this.$confirm('备注为空, 是否继续?', '提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        type: 'warning'
+                    }).then(() => {
+                        this.confirmInsert(id,moneyObject,created_at)
+
+                    }).catch(() => {
+                        this.$message({
+                            type: 'info',
+                            message: '已取消'
+                        });
+                    });
+
+                } else {
+                    this.confirmInsert(id,moneyObject,created_at)
+                }
+
+
 
             },
             toDate(date) {
